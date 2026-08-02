@@ -21,6 +21,10 @@ public class Pairing
 
     public void Rate(decimal rating)
     {
+        if (rating < 0)
+            throw new ArgumentException("Rating cannot be negative.", nameof(rating));
+        if (rating > 5)
+            throw new ArgumentException("Rating cannot exceed 5.", nameof(rating));
         NumberOfRatings++;
         CompatibilityRating = ((CompatibilityRating * (NumberOfRatings - 1)) + rating) / NumberOfRatings;
     }
