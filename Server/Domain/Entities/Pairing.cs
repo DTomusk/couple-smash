@@ -9,6 +9,12 @@ public class Pairing
     public decimal CompatibilityRating { get; private set; }
     public int NumberOfRatings { get; private set; }
 
+    // EF navigation properties
+    public Member? FirstMember { get; private set; }
+    public Member? SecondMember { get; private set; }
+
+    private Pairing() { }
+
     public Pairing(Guid firstMemberId, Guid secondMemberId)
     {
         Id = Guid.NewGuid();

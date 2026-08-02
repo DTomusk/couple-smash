@@ -5,6 +5,8 @@ public class Member
     public Guid Id { get; init; }
     public string Name { get; init; }
 
+    private Member() { }
+
     public Member(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
