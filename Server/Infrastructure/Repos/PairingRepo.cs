@@ -12,12 +12,17 @@ public class PairingRepo : IPairingRepo
         _context = context;
     }
 
-    public Task<Pairing> GetPairingAsync(Guid pairingId)
+    public Task<Pairing> GetPairingAsync(Guid pairingId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdatePairingAsync(Pairing pairing)
+    public Task UpdatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task CreatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

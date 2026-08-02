@@ -8,9 +8,9 @@ namespace Server.Controllers;
 [ApiController]
 public class PairingController : ControllerBase
 {
-    private readonly IService _service;
+    private readonly IPairingService _service;
 
-    public PairingController(IService service)
+    public PairingController(IPairingService service)
     {
         _service = service;
     }

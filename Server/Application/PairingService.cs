@@ -3,17 +3,17 @@ using Application.Interface;
 
 namespace Application;
 
-public interface IService
+public interface IPairingService
 {
     Task RatePairingAsync(Guid pairingId, decimal rating);
     Task<PairingResponse> GetRandomPairingAsync();
 }
 
-public class Service : IService
+public class PairingService : IPairingService
 {
     private readonly IPairingRepo _pairingRepo;
 
-    public Service(IPairingRepo pairingRepo)
+    public PairingService(IPairingRepo pairingRepo)
     {
         _pairingRepo = pairingRepo;
     }

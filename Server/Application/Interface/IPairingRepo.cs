@@ -4,6 +4,7 @@ namespace Application.Interface;
 
 public interface IPairingRepo
 {
-    Task<Pairing> GetPairingAsync(Guid pairingId);
-    Task UpdatePairingAsync(Pairing pairing);
+    Task<Pairing> GetPairingAsync(Guid pairingId, CancellationToken cancellationToken = default);
+    Task CreatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default);
+    Task UpdatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default);
 }
