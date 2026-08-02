@@ -15,10 +15,12 @@ public interface IPairingService
 public class PairingService : IPairingService
 {
     private readonly IPairingRepo _pairingRepo;
+    private readonly IMemberRepo _memberRepo;
 
-    public PairingService(IPairingRepo pairingRepo)
+    public PairingService(IPairingRepo pairingRepo, IMemberRepo memberRepo)
     {
         _pairingRepo = pairingRepo;
+        _memberRepo = memberRepo;
     }
 
     public async Task ExemptPairingAsync(Guid pairingId)
@@ -36,9 +38,25 @@ public class PairingService : IPairingService
         return await _pairingRepo.GetPairingsAsync();
     }
 
-    public Task<PairingResponse> GetRandomPairingAsync()
+    public async Task<PairingResponse> GetRandomPairingAsync()
     {
-        throw new NotImplementedException();
+        var pairing = await _pairingRepo.GetRandomPairingAsync();
+        if (pairing == null)
+            throw new InvalidOperationException("No pairings available.");
+
+        var members = await _memberRepo.GetMembersByIdsAsync(new[] { pairing.FirstMemberId, pairing.SecondMemberId });
+        if (members.Count() != 2)
+            throw new InvalidOperationException("One or both members not found.");
+
+        var firstMember = members.FirstOrDefault(x => x.Id == pairing.FirstMemberId);
+        if (firstMember == null)
+            throw new InvalidOperationException("Member could not be found");
+
+        var secondMember = members.FirstOrDefault(x => x.Id == pairing.SecondMemberId);
+        if (secondMember == null)
+            throw new InvalidOperationException("Member could not be found");
+
+        return new PairingResponse(pairing.Id, firstMember.Name, secondMember.Name);
     }
 
     public async Task RatePairingAsync(Guid pairingId, decimal rating)

@@ -34,4 +34,11 @@ public class PairingRepo : IPairingRepo
         _context.Add(pairing);
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<Pairing?> GetRandomPairingAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Pairings
+            .OrderBy(x => Guid.NewGuid())
+            .FirstOrDefaultAsync(cancellationToken);
+    }
 }

@@ -28,4 +28,9 @@ public class MemberRepo : IMemberRepo
     {
         return await _context.Members.Where(x => x.Name == name).FirstOrDefaultAsync(cancellationToken);
     }
+
+    public async Task<IEnumerable<Member>> GetMembersByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
+    {
+        return await _context.Members.Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
+    }
 }

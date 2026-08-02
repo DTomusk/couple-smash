@@ -8,4 +8,5 @@ public interface IPairingRepo
     Task<IEnumerable<Pairing>> GetPairingsAsync(CancellationToken cancellationToken = default);
     Task CreatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default);
     Task UpdatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default);
+    Task<Pairing?> GetRandomPairingAsync(CancellationToken cancellationToken = default);
 }

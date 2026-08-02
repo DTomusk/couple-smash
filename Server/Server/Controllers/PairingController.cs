@@ -15,7 +15,7 @@ public class PairingController : ControllerBase
         _service = service;
     }
 
-    [HttpGet(Name = "GetRandomPairing")]
+    [HttpGet("Random", Name = "GetRandomPairing")]
     public async Task<IActionResult> GetRandomPairing()
     {
         var pairing = await _service.GetRandomPairingAsync();
