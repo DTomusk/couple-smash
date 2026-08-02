@@ -13,6 +13,8 @@ public class MemberService : IMemberService
 {
     private readonly IMemberRepo _memberRepo;
     private readonly IPairingRepo _pairingRepo;
+    // Optimum weight algorithm becomes very slow very quickly, so limit members
+    private const int MAX_MEMBERS = 24;
 
     public MemberService(IMemberRepo memberRepo, IPairingRepo pairingRepo)
     {
@@ -27,6 +29,9 @@ public class MemberService : IMemberService
             throw new ArgumentException("Member with the same name already exists.", nameof(Name));
 
         var allMembers = await _memberRepo.GetAllMembersAsync(cancellationToken);
+
+        if (allMembers.Count() >= MAX_MEMBERS)
+            throw new InvalidOperationException($"Cannot add more than {MAX_MEMBERS} members.");
 
         var newMember = new Member(Name);
 

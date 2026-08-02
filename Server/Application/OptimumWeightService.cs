@@ -24,6 +24,7 @@ public class OptimumWeightService : IOptimumWeightService
         var memberList = members.ToList();
         int count = memberList.Count;
 
+        // Map member id to index in member list
         var memberIdToIndex = memberList
             .Select((m, i) => new { m.Id, Index = i })
             .ToDictionary(x => x.Id, x => x.Index);
@@ -34,10 +35,18 @@ public class OptimumWeightService : IOptimumWeightService
         {
             for (int j = 0; j < count; j++)
             {
-                decimal rating = GetRatingForPairing(memberList[i].Id, memberList[j].Id, pairings);
+                // Self pairings are invalid
+                if (i != j)
+                {
+                    // Get the score of the existing pairing for the members
+                    // Make it super low if not present/exempt
+                    decimal rating = GetRatingForPairing(memberList[i].Id, memberList[j].Id, pairings);
+                    weights[i, j] = rating;
+                }
             }
         }
 
+        // Cache the weights matrix so we don't have to recalculate for a given mask
         var memo = new Dictionary<int, (decimal weight, List<(int, int)> pairs)>();
 
         (decimal maxWeight, List<(int, int)> selectedPairs) SolveMatching(int mask)
@@ -54,7 +63,28 @@ public class OptimumWeightService : IOptimumWeightService
 
             int maskWithoutFirst = mask ^ (1 << firstNode);
 
+            // Start with not pairing the first node with anyone
             var (bestWeight, bestPairs) = SolveMatching(maskWithoutFirst);
+
+            // Try pairing the first node with each other node
+            for (int secondNode = firstNode + 1; secondNode < count; secondNode++)
+            {
+                if ((mask & (1 << secondNode)) != 0)
+                {
+                    int maskWithoutBoth = maskWithoutFirst ^ (1 << secondNode);
+                    var (remainingWeight, remainingPairs) = SolveMatching(maskWithoutBoth);
+
+                    decimal pairWeight = weights[firstNode, secondNode];
+                    decimal totalWeight = pairWeight + remainingWeight;
+
+                    if (totalWeight > bestWeight)
+                    {
+                        bestWeight = totalWeight;
+                        bestPairs = new List<(int, int)>(remainingPairs);
+                        bestPairs.Add((firstNode, secondNode));
+                    }
+                }
+            }
 
             memo[mask] = (bestWeight, bestPairs);
             return (bestWeight, bestPairs);
@@ -73,7 +103,13 @@ public class OptimumWeightService : IOptimumWeightService
             (p.FirstMemberId == memberId1 && p.SecondMemberId == memberId2) ||
             (p.FirstMemberId == memberId2 && p.SecondMemberId == memberId1));
 
-        // E.g. for existing couples (those who are exempted), compatibility is 0
-        return pairing?.CompatibilityRating ?? 0m;
+        if (pairing == null)
+            return -1000m;
+
+        // Expect exempted pairs haven't been passed in, but protect against it
+        if (pairing.IsExempted)
+            return -1000m;
+
+        return pairing.CompatibilityRating;
     }
 }
