@@ -12,6 +12,7 @@
 	<PackageReference Include="Microsoft.Extensions.Options" Version="10.0.10" />
 	<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+	<PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

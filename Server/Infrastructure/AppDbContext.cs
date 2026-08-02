@@ -28,20 +28,16 @@ public class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id);
 
-            entity.HasOne<Member>()
+            entity.HasOne(e => e.FirstMember)
                 .WithMany()
                 .HasForeignKey(e => e.FirstMemberId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne<Member>()
+            entity.HasOne(e => e.SecondMember)
                 .WithMany()
                 .HasForeignKey(e => e.SecondMemberId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.Property(e => e.FirstMemberId)
-                .IsRequired();
-            entity.Property(e => e.SecondMemberId)
-                .IsRequired();
             entity.Property(e => e.IsExempted)
                 .IsRequired();
             entity.Property(e => e.CompatibilityRating)
