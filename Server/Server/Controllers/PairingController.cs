@@ -15,11 +15,18 @@ public class PairingController : ControllerBase
         _service = service;
     }
 
-    [HttpGet]
+    [HttpGet(Name = "GetRandomPairing")]
     public async Task<IActionResult> GetRandomPairing()
     {
         var pairing = await _service.GetRandomPairingAsync();
         return Ok(pairing);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetPairings()
+    {
+        var pairings = await _service.GetPairingsAsync();
+        return Ok(pairings);
     }
 
     [HttpPost(Name = "RatePairing")]

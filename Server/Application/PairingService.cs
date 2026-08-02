@@ -1,5 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interface;
+using Domain.Entities;
 
 namespace Application;
 
@@ -7,6 +8,7 @@ public interface IPairingService
 {
     Task RatePairingAsync(Guid pairingId, decimal rating);
     Task<PairingResponse> GetRandomPairingAsync();
+    Task<IEnumerable<Pairing>> GetPairingsAsync();
     Task ExemptPairingAsync(Guid pairingId);
 }
 
@@ -27,6 +29,11 @@ public class PairingService : IPairingService
 
         pairing.SetExempted();
         await _pairingRepo.UpdatePairingAsync(pairing);
+    }
+
+    public async Task<IEnumerable<Pairing>> GetPairingsAsync()
+    {
+        return await _pairingRepo.
     }
 
     public Task<PairingResponse> GetRandomPairingAsync()
