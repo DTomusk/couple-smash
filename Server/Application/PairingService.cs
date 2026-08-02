@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Interface;
 using Domain.Entities;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application;
 
@@ -17,11 +18,21 @@ public class PairingService : IPairingService
 {
     private readonly IPairingRepo _pairingRepo;
     private readonly IMemberRepo _memberRepo;
+    private readonly IOptimumWeightService _weightService;
+    private readonly IMemoryCache _cache;
 
-    public PairingService(IPairingRepo pairingRepo, IMemberRepo memberRepo)
+    private const string CACHE_KEY_OPTIMAL_PAIRINGS = "optimal_pairings";
+    private const int CACHE_DURATION_MINUTES = 10;
+
+    public PairingService(IPairingRepo pairingRepo,
+        IMemberRepo memberRepo,
+        IOptimumWeightService weightService,
+        IMemoryCache cache)
     {
         _pairingRepo = pairingRepo;
         _memberRepo = memberRepo;
+        _weightService = weightService;
+        _cache = cache;
     }
 
     public async Task ExemptPairingAsync(Guid pairingId)
@@ -36,11 +47,20 @@ public class PairingService : IPairingService
 
     public async Task<IEnumerable<Pairing>> GetOptimalPairingsAsync()
     {
+        if (_cache.TryGetValue(CACHE_KEY_OPTIMAL_PAIRINGS, out IEnumerable<Pairing> cachedPairings))
+        {
+            return cachedPairings;
+        }
+
         var pairings = await _pairingRepo.GetNonExemptedPairingsAsync();
+        var members = await _memberRepo.GetAllMembersAsync();
 
         // TODO: run algorithm to find optimal pairings based on ratings
+        var optimalPairings = await _weightService.GetOptimumWeightPairingsAsync(members, pairings);
 
-        return pairings;
+        _cache.Set(CACHE_KEY_OPTIMAL_PAIRINGS, optimalPairings, TimeSpan.FromMinutes(CACHE_DURATION_MINUTES));
+
+        return optimalPairings;
     }
 
     public async Task<IEnumerable<Pairing>> GetPairingsAsync()
