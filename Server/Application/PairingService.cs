@@ -10,6 +10,7 @@ public interface IPairingService
     Task<PairingResponse> GetRandomPairingAsync();
     Task<IEnumerable<Pairing>> GetPairingsAsync();
     Task ExemptPairingAsync(Guid pairingId);
+    Task<IEnumerable<Pairing>> GetOptimalPairingsAsync();
 }
 
 public class PairingService : IPairingService
@@ -31,6 +32,15 @@ public class PairingService : IPairingService
 
         pairing.SetExempted();
         await _pairingRepo.UpdatePairingAsync(pairing);
+    }
+
+    public async Task<IEnumerable<Pairing>> GetOptimalPairingsAsync()
+    {
+        var pairings = await _pairingRepo.GetNonExemptedPairingsAsync();
+
+        // TODO: run algorithm to find optimal pairings based on ratings
+
+        return pairings;
     }
 
     public async Task<IEnumerable<Pairing>> GetPairingsAsync()

@@ -38,7 +38,15 @@ public class PairingRepo : IPairingRepo
     public async Task<Pairing?> GetRandomPairingAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Pairings
+            .Where(x => !x.IsExempted)
             .OrderBy(x => Guid.NewGuid())
             .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<IEnumerable<Pairing>> GetNonExemptedPairingsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Pairings
+            .Where(x => !x.IsExempted)
+            .ToListAsync(cancellationToken);
     }
 }

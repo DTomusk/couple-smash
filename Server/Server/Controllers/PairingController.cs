@@ -29,7 +29,7 @@ public class PairingController : ControllerBase
         return Ok(pairings);
     }
 
-    [HttpPost(Name = "RatePairing")]
+    [HttpPost("Rate", Name = "RatePairing")]
     public async Task<IActionResult> RatePairing([FromBody] RatePairingRequest request)
     {
         try
@@ -47,7 +47,7 @@ public class PairingController : ControllerBase
         }
     }
 
-    [HttpPost(Name = "ExemptPairing")]
+    [HttpPost("Exempt", Name = "ExemptPairing")]
     public async Task<IActionResult> ExemptPairing(Guid pairingId)
     {
         try
@@ -63,5 +63,12 @@ public class PairingController : ControllerBase
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    [HttpGet("Optimal", Name = "GetOptimalPairings")]
+    public async Task<IActionResult> GetOptimalPairings()
+    {
+        var pairings = await _service.GetOptimalPairingsAsync();
+        return Ok(pairings);
     }
 }
