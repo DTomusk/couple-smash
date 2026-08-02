@@ -14,5 +14,6 @@ public static class Register
             options.UseNpgsql(configuration.GetConnectionString("DATABASE_URL")));
 
         services.AddScoped<IPairingRepo, PairingRepo>();
+        services.AddScoped<IMemberRepo, MemberRepo>();
     }
 }

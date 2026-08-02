@@ -31,4 +31,11 @@ public class MemberController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMembers()
+    {
+        var members = await _memberService.GetMembers();
+        return Ok(members);
+    }
 }

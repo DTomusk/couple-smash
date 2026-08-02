@@ -1,5 +1,6 @@
 ﻿using Application.Interface;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repos;
 
@@ -12,18 +13,25 @@ public class PairingRepo : IPairingRepo
         _context = context;
     }
 
-    public Task<Pairing> GetPairingAsync(Guid pairingId, CancellationToken cancellationToken = default)
+    public async Task<Pairing?> GetPairingAsync(Guid pairingId, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Pairings.FindAsync(new object[] { pairingId }, cancellationToken);
     }
 
-    public Task UpdatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Pairing>> GetPairingsAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Pairings.ToListAsync(cancellationToken);
     }
 
-    public Task CreatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
+    public async Task UpdatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _context.Update(pairing);
+        await _context.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task CreatePairingAsync(Pairing pairing, CancellationToken cancellationToken = default)
+    {
+        _context.Add(pairing);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

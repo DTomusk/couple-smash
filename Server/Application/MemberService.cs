@@ -6,6 +6,7 @@ namespace Application;
 public interface IMemberService
 {
     Task CreateMember(string Name, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Member>> GetMembers(CancellationToken cancellationToken = default);
 }
 
 public class MemberService : IMemberService
@@ -38,5 +39,11 @@ public class MemberService : IMemberService
             var pairing = new Pairing(newMember.Id, member.Id);
             await _pairingRepo.CreatePairingAsync(pairing, cancellationToken);
         }
+    }
+
+    public async Task<IEnumerable<Member>> GetMembers(CancellationToken cancellationToken = default)
+    {
+        var members = await _memberRepo.GetAllMembersAsync(cancellationToken);
+        return members;
     }
 }

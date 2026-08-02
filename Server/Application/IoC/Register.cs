@@ -7,5 +7,6 @@ public static class Register
     public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<IPairingService, PairingService>();
+        services.AddScoped<IMemberService, MemberService>();
     }
 }

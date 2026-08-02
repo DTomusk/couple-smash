@@ -33,7 +33,7 @@ public class PairingService : IPairingService
 
     public async Task<IEnumerable<Pairing>> GetPairingsAsync()
     {
-        return await _pairingRepo.
+        return await _pairingRepo.GetPairingsAsync();
     }
 
     public Task<PairingResponse> GetRandomPairingAsync()
