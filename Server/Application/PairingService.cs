@@ -7,6 +7,7 @@ public interface IPairingService
 {
     Task RatePairingAsync(Guid pairingId, decimal rating);
     Task<PairingResponse> GetRandomPairingAsync();
+    Task ExemptPairingAsync(Guid pairingId);
 }
 
 public class PairingService : IPairingService
@@ -16,6 +17,16 @@ public class PairingService : IPairingService
     public PairingService(IPairingRepo pairingRepo)
     {
         _pairingRepo = pairingRepo;
+    }
+
+    public async Task ExemptPairingAsync(Guid pairingId)
+    {
+        var pairing = await _pairingRepo.GetPairingAsync(pairingId);
+        if (pairing == null)
+            throw new ArgumentException("Pairing not found.", nameof(pairingId));
+
+        pairing.SetExempted();
+        await _pairingRepo.UpdatePairingAsync(pairing);
     }
 
     public Task<PairingResponse> GetRandomPairingAsync()

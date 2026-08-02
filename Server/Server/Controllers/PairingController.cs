@@ -39,4 +39,22 @@ public class PairingController : ControllerBase
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost(Name = "ExemptPairing")]
+    public async Task<IActionResult> ExemptPairing(Guid pairingId)
+    {
+        try
+        {
+            await _service.ExemptPairingAsync(pairingId);
+            return Ok();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

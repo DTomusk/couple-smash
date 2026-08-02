@@ -17,6 +17,18 @@ public class MemberController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateMember(string Name)
     {
-
+        try
+        {
+            await _memberService.CreateMember(Name);
+            return Ok();
+        }
+        catch (ArgumentException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

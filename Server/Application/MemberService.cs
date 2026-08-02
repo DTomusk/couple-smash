@@ -32,6 +32,7 @@ public class MemberService : IMemberService
         // TODO: consider making all these repo methods atomic
         await _memberRepo.CreateMemberAsync(newMember, cancellationToken);
 
+        // TODO: this is orchestrating a pairing concern, which probably shouldn't live in the member service
         foreach (var member in allMembers)
         {
             var pairing = new Pairing(newMember.Id, member.Id);
