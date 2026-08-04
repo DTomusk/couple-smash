@@ -9,7 +9,7 @@ public interface IPairingService
 {
     Task RatePairingAsync(Guid pairingId, decimal rating);
     Task<PairingResponse> GetRandomPairingAsync();
-    Task<IEnumerable<Pairing>> GetPairingsAsync();
+    Task<IEnumerable<PairingResponse>> GetPairingsAsync();
     Task ExemptPairingAsync(Guid pairingId);
     Task<IEnumerable<PairingResponse>> GetOptimalPairingsAsync();
 }
@@ -70,9 +70,15 @@ public class PairingService : IPairingService
         return pairingResponses;
     }
 
-    public async Task<IEnumerable<Pairing>> GetPairingsAsync()
+    public async Task<IEnumerable<PairingResponse>> GetPairingsAsync()
     {
-        return await _pairingRepo.GetPairingsAsync();
+        var pairings = await _pairingRepo.GetPairingsAsync();
+        var members = await _memberRepo.GetAllMembersAsync();
+
+        return pairings.Select(p => new PairingResponse(
+            p.Id,
+            members.FirstOrDefault(m => m.Id == p.FirstMemberId)?.Name ?? "Unknown",
+            members.FirstOrDefault(m => m.Id == p.SecondMemberId)?.Name ?? "Unknown")).ToList();
     }
 
     public async Task<PairingResponse> GetRandomPairingAsync()

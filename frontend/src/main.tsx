@@ -9,7 +9,17 @@ import { initApiClient } from './lib/client.ts'
 
 initApiClient(import.meta.env.VITE_API_BASE_URL);
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient(
+  {
+    defaultOptions: {
+      queries: {
+        retry: 1,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+      },
+    },
+  }
+);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

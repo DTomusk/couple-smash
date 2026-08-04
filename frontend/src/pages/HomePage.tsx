@@ -28,7 +28,7 @@ export default function HomePage() {
     return (
         <Stack spacing={2} sx={{ padding: 2, marginTop: 12 }}>
             <Typography variant="h1">Couple Smash??</Typography>
-            <Typography variant="body1">Disregarding sexuality, how compatible do you think the following two gritty people are?</Typography>
+            <Typography variant="body1">Disregarding sexuality, how good of a couple do you think the following two gritty people would make?</Typography>
             <Alert severity="info">Note: real life couples have been excluded from this experiment</Alert>
             {/* It's very important to inundate the user with progress bars */}
             {isLoading && <Stack spacing={1}>
