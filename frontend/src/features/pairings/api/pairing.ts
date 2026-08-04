@@ -8,3 +8,7 @@ export const getRandomPairing = async () => {
 export const ratePairing = async (request: RatePairingRequest) => {
     return api.post("/pairing/rate", JSON.stringify(request));
 };
+
+export const getOptimalPairings = async () => {
+    return api.get<GetRandomPairingResponse[]>("/pairing/optimal");
+}

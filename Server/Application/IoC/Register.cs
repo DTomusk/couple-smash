@@ -9,5 +9,6 @@ public static class Register
         services.AddScoped<IPairingService, PairingService>();
         services.AddScoped<IMemberService, MemberService>();
         services.AddScoped<IOptimumWeightService, OptimumWeightService>();
+        services.AddScoped<IRatingService, RatingService>();
     }
 }

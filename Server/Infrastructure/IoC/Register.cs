@@ -15,5 +15,6 @@ public static class Register
 
         services.AddScoped<IPairingRepo, PairingRepo>();
         services.AddScoped<IMemberRepo, MemberRepo>();
+        services.AddScoped<IRatingRepo, RatingRepo>();
     }
 }

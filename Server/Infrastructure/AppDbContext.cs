@@ -11,7 +11,7 @@ public class AppDbContext : DbContext
 
     public DbSet<Member> Members => Set<Member>();
     public DbSet<Pairing> Pairings => Set<Pairing>();
-
+    public DbSet<Rating> Ratings => Set<Rating>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -43,6 +43,16 @@ public class AppDbContext : DbContext
             entity.Property(e => e.CompatibilityRating)
                 .IsRequired();
             entity.Property(e => e.NumberOfRatings)
+                .IsRequired();
+        });
+
+        modelBuilder.Entity<Rating>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.PairingId)
+                .IsRequired();
+            entity.Property(e => e.Value)
                 .IsRequired();
         });
     }
