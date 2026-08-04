@@ -26,7 +26,7 @@ export default function HomePage() {
     }
 
     return (
-        <Stack spacing={2} sx={{ padding: 2, marginTop: 12 }}>
+        <Stack spacing={2} sx={{ padding: 1, overflowY: 'auto' }}>
             <Typography variant="h1">Couple Smash??</Typography>
             <Typography variant="body1">Disregarding sexuality, how good of a couple do you think the following two gritty people would make?</Typography>
             <Alert severity="info">Note: real life couples have been excluded from this experiment</Alert>
@@ -41,17 +41,17 @@ export default function HomePage() {
             {pairing && (
                 <Stack spacing={2}>
                     <Grid container spacing={2}>
-                        <Grid size={5}>
+                        <Grid size={{ xs: 12, sm: 5}}>
                             <Card sx={{ padding: 2, textAlign: 'center' }}>
                                 <Typography variant="h3">{pairing.firstMemberName}</Typography>
                             </Card>
                         </Grid>
-                        <Grid size={2}>
+                        <Grid size={{ xs: 12, sm: 2}}>
                             <Card sx={{ padding: 2, textAlign: 'center' }}>
                                 <Typography variant="h3">&</Typography>
                             </Card>
                         </Grid>
-                        <Grid size={5}>
+                        <Grid size={{ xs: 12, sm: 5}}>
                             <Card sx={{ padding: 2, textAlign: 'center' }}>
                                 <Typography variant="h3">{pairing.secondMemberName}</Typography>
                             </Card>
@@ -60,7 +60,7 @@ export default function HomePage() {
                     <Typography variant="h3" sx={{ textAlign: 'center' }}>Compatibility</Typography>
                     <Grid container spacing={2} sx={{ marginTop: 2 }}>
                         {[0, 1, 2, 3, 4, 5].map((rating) => (
-                            <Grid size={2} key={rating}>
+                            <Grid size={{ xs: 4, sm: 2}} key={rating}>
                                 <Button variant="text" color="primary" 
                                     onClick={() => handleRatePairing(rating)} 
                                     sx={{ borderRadius: '50%', width: '100%', aspectRatio: '1 / 1'}}>

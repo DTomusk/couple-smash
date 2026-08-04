@@ -13,10 +13,11 @@ export default function AppLayout() {
                     minHeight: 0,
                     overflowY: "auto",
                     display: 'flex',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     justifyContent: 'center',
                     px: 2,
                     py: 4,
+                    pt: { xs: 8, md: 9 },
                     background: (theme) =>
                         `linear-gradient(135deg, ${theme.palette.primary.light}1f 0%, ${theme.palette.background.default} 45%, ${theme.palette.secondary.light}1a 100%)`,
                 }}
