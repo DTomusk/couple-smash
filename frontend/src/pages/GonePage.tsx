@@ -1,3 +1,5 @@
+import { Stack, Typography } from "@mui/material";
+
 export default function GonePage() {
     return (
         <Stack spacing={2} sx={{ padding: 1, overflowY: 'auto' }}>

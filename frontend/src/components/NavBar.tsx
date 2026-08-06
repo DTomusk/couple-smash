@@ -10,9 +10,9 @@ export default function NavBar() {
             <AppBar position="fixed" color="primary">
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography variant="h5">💍Couple Smash💑</Typography>
-                    <Button variant="text" color="inherit" onClick={() => navigate('/optimal-pairings')}>
+                    {/* <Button variant="text" color="inherit" onClick={() => navigate('/optimal-pairings')}>
                         Optimal Pairings
-                    </Button>
+                    </Button> */}
                 </Toolbar>
             </AppBar>
         </>
