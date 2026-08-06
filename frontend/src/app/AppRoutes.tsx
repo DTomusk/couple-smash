@@ -17,7 +17,6 @@ export const router = createBrowserRouter([
             // },
             {
                 index: true,
-                path: '*',
                 element: <GonePage />
             }
         ]
